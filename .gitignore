@@ -13,7 +13,7 @@ target/
 .springBeans
 .sts4-cache
 
-server/src/main/resources/application-dev.yml
+./server/src/main/resources/application-dev.yml
 ### IntelliJ IDEA ###
 .idea
 *.iws
