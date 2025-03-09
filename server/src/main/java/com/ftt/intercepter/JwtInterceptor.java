@@ -4,15 +4,17 @@ package com.ftt.intercepter;
 import com.ftt.constant.JwtClaimsConstant;
 import com.ftt.context.BaseContext;
 import com.ftt.entity.JwtProperties;
+import com.ftt.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.ftt.utils.JwtUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
@@ -43,10 +45,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
-            BaseContext.setCurrentId(empId);
-
+            Integer userId = Math.toIntExact(Integer.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()));
+            log.info("当前员工id：", userId);
+            BaseContext.setCurrentId(userId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {

@@ -46,7 +46,7 @@ public class JwtUtil {
      * @param jwt
      * @return
      */
-    public static Claims parseJWT(String secretKey, String jwt) {
+    public static io.jsonwebtoken.Claims parseJWT(String secretKey, String jwt) {
         // 得到DefaultJwtParser
         Claims claims = Jwts.parser()
                 // 设置签名的秘钥

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class LoginVO {
-    private Long id;
+    private Integer id;
     private String userName;
     private String token;
 

@@ -6,25 +6,28 @@ spring:
     active: dev
   main:
     allow-circular-references: true
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   datasource:
     druid:
-      driver-class-name: ${ict.datasource.driver-class-name}
-      url: jdbc:mysql://${ict.datasource.host}:${ict.datasource.port}/${ict.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: ${ict.datasource.username}
-      password: ${ict.datasource.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://47.242.110.11:3306/ict
+      username: root
+      password: 1121135791121Ab
 
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.sky.entity
+  type-aliases-package: com.ict.entity
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
     com:
-      sky:
+      ict:
         mapper: debug
         service: info
         controller: info

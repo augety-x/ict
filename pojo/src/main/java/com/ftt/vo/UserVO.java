@@ -1,17 +1,15 @@
-package com.ftt.entity;
+package com.ftt.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class User {
-    @TableId(value = "user_id", type = IdType.AUTO)
+public class UserVO {
+
     private Integer userId;
     private String username;
-    private String password;
     private int status;
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;

@@ -1,18 +1,18 @@
-package com.ftt.ict;
+package com.ftt;
 
-import com.ftt.tests.Tests;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-@SpringBootApplication
+
 @EnableTransactionManagement
 @Slf4j
+@SpringBootApplication(scanBasePackages = {"com.ftt"})
+@MapperScan("com.ftt.mapper")
 public class IctApplication {
 
     public static void main(String[] args) {
-        Tests tets = new Tests();
-        tets.test();
         SpringApplication.run(IctApplication.class, args);
     }
 
