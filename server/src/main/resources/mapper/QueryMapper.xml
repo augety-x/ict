@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ftt.mapper.QueryMapper">
+    <!-- 根据 userId 和 categoryId 查询标本，并实现分页 -->
+    <select id="findByUserIdAndCategoryId" resultType="com.ftt.entity.Specimen">
+        SELECT *
+        FROM specimen
+        WHERE user_id = #{userId}
+          AND category_id = #{categoryId}
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <!-- 根据 identification、userId 和 reviewStatus 查询标本，并实现分页 -->
+    <select id="findByIdentificationAndUserIdAndReviewStatus" resultType="com.ftt.entity.Specimen">
+        SELECT *
+        FROM specimen
+        WHERE identification = #{identification}
+          AND user_id = #{userId}
+          AND review_status = #{reviewStatus}
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+</mapper>

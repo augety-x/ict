@@ -5,9 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "sky.alioss")
+
+@ConfigurationProperties(prefix = "ict.huaweiobs")
 @Data
-public class AliOssProperties {
+public class HuaweiObsProperties {
 
     private String endpoint;
     private String accessKeyId;

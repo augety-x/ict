@@ -83,6 +83,7 @@ public class UserServiceImpl  implements UserService {
         RegisterVO registerVO = new RegisterVO();
         registerVO.setUserId(Math.toIntExact(user.getUserId()));
         registerVO.setUsername(user.getUsername());
+        // 完成角色初始化
 
         return registerVO;
     }

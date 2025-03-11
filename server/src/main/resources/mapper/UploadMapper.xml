@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ftt.mapper.UploadMapper">
+    <resultMap id="ImageResponseVOOMap" type="com.ftt.vo.ImageResponseVOO">
+        <result property="image_id" column="image_id"/>
+        <result property="file_id" column="file_id"/>
+        <result property="image_path" column="image_path"/>
+        <result property="file_type" column="file_type"/>
+        <result property="specimen_identification" column="specimen_identification"/>
+        <result property="category_name" column="category_name"/>
+        <result property="height" column="height"/>
+        <result property="width" column="width"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="altitude" column="altitude"/>
+        <result property="taken_at" column="taken_at"/>
+    </resultMap>
+    <!-- 根据条件查询图像数据 -->
+    <select id="findImagesByCriteria" resultMap="ImageResponseVOOMap">
+        SELECT
+        ri.image_id AS image_id,
+        ri.file_id AS file_id,
+        f.file_path AS image_path,
+        f.file_type AS file_type,
+        s.identification AS specimen_identification,
+        c.category_name AS category_name,
+        i.height AS height,
+        i.width AS width,
+        i.latitude AS latitude,
+        i.longitude AS longitude,
+        i.altitude AS altitude,
+        i.taken_at AS taken_at
+        FROM rock_image ri
+        JOIN file f ON ri.file_id = f.id
+        JOIN image i ON ri.image_id = i.id
+        JOIN ict.rock_category c ON ri.category_id = c.id
+        JOIN specimen s ON ri.specimen_id = s.id
+        WHERE 1=1
+        <if test="user_id != null">
+            AND ri.user_id = #{user_id}
+        </if>
+        <if test="categoryId != null">
+            AND ri.category_id = #{categoryId}
+        </if>
+        <if test="specimenId != null">
+            AND ri.specimen_id = #{specimenId}
+        </if>
+        <if test="start_datetime != null">
+            AND ri.created_at >= #{start_datetimeT}
+        </if>
+        <if test="end_datetime != null">
+            AND ri.created_at &lt;= #{end_datetimeT}
+        </if>
+    </select>
+
+    <!-- 查询岩石照片表记录 -->
+    <select id="selectRockImageById" parameterType="int" resultType="com.ftt.entity.RockImage">
+        SELECT * FROM `rock_image` WHERE id = #{id}
+    </select>
+    <!-- 查询岩石照片表记录 -->
+    <select id="selectImagePathById" parameterType="int" resultType="String">
+        SELECT file_path FROM `file` WHERE id = #{id}
+    </select>
+
+
+    <!-- 插入文件表 -->
+    <insert id="insertFile" parameterType="com.ftt.entity.File" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO `file` (user_id, file_name, file_size, file_type, file_path, created_at, updated_at)
+        VALUES (#{userId}, #{fileName}, #{fileSize}, #{fileType}, #{filePath}, #{createdAt}, #{updatedAt});
+    </insert>
+
+    <!-- 插入图片表 -->
+    <insert id="insertImage" parameterType="com.ftt.entity.Image" useGeneratedKeys="true" keyProperty="imageId">
+        INSERT INTO `image` (file_id, user_id, height, width, camera_model, latitude, longitude, altitude, taken_at, exif_data, focal_length, aperture, iso)
+        VALUES (#{fileId}, #{userId}, #{height}, #{width}, #{cameraModel}, #{latitude}, #{longitude}, #{altitude}, #{takenAt}, #{exifData}, #{focalLength}, #{aperture}, #{iso});
+    </insert>
+
+    <insert id="insertSpecimen" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO specimen (category_id, location, identification, latitude, longitude, altitude, user_id, created_by, review_status, reviewer, created_at, updated_at)
+        VALUES (#{categoryId}, #{location}, #{identification}, #{latitude}, #{longitude}, #{altitude}, #{userId}, #{createdBy}, #{reviewStatus}, #{reviewer}, #{createdAt}, #{updatedAt})
+    </insert>
+
+
+
+    <!-- 插入岩石照片表 -->
+    <insert id="insertRockImage" parameterType="com.ftt.entity.RockImage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `rock_image` (image_id, user_id, category_id, specimen_id, file_id,created_at, updated_at)
+        VALUES (#{imageId}, #{userId}, #{categoryId}, #{specimenId}, #{fileId},#{createdAt}, #{updatedAt});
+    </insert>
+    <select id="findIdByIdentification" resultType="java.lang.Integer">
+        SELECT id FROM specimen WHERE identification = #{identification}
+    </select>
+    <select id="findIdByCategoryName" resultType="java.lang.Integer">
+        SELECT id FROM rock_category WHERE category_name = #{categoryName}
+    </select>
+    <select id="selectCategoryNameById" resultType="java.lang.String">
+        SELECT category_name FROM rock_category WHERE id = #{id}
+    </select>
+    <select id="selectSpecimenNameById" resultType="java.lang.String">
+        SELECT identification FROM specimen WHERE id = #{id}
+    </select>
+
+</mapper>

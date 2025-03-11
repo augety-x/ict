@@ -35,8 +35,8 @@ public class AutoFillAspect {
 
         if (operationType.equals(OperationType.INSERT)){
             try {
-                entity.getClass().getDeclaredMethod("setCreateTime", LocalDateTime.class).invoke(entity,cur);
-                entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class).invoke(entity,cur);
+                entity.getClass().getDeclaredMethod("setCreatedAt", LocalDateTime.class).invoke(entity,cur);
+                entity.getClass().getDeclaredMethod("setUpdatedAt", LocalDateTime.class).invoke(entity,cur);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } catch (InvocationTargetException e) {
